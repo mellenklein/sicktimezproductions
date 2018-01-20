@@ -51,7 +51,43 @@
 		</script>
 
 
+		<div id="main_nav_wrapper">
+			<div id="main_nav_bg"></div>
+			<div id="main_nav" class="closed ">
+				<div>
+					<a href="/" id="go_home">
+						<div class="logo-container">
+							<h3 class="logo">Sick Timez</h3>
+							<h6 class="logo">Productions</h6>
+						</div>
+					</a>
 
+					<div id="global-nav-items" class="show-for-medium">
+						<ul>
+							<li><a href="/about">About</a></li>
+							<li><a href="/work">Music</a></li>
+							<li><a href="/video">Video</a></li>
+							<li><a href="/limited-edition">Limited Edition</a></li>
+							<li><a href="/contact">Contact</a></li>
+						</ul>
+					</div>
+					<div id="main-hamburger" class="hide-for-medium">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<div id="main_nav_items">
+					<ul class="menu vertical text-center">
+						<li><a href="/about">About</a></li>
+						<li><a href="/work">Music</a></li>
+						<li><a href="/video">Video</a></li>
+						<li><a href="/limited-edition">Limited Edition</a></li>
+						<li><a href="/contact">Contact</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 		<!-- Main content goes here -->
 		<div id="mainContentBox">
 			<?php echo $output['content']; ?>
@@ -65,12 +101,12 @@
 			<div class="row">
 				<div class="columns large-12 text-center">
 					<h4><a target="_blank" href="/contact">Contact</a></h4>
-					<p>&copy; 2017 Sick Timez Productions, All Rights Reserved.</p>
 					<div class="social">
 						<a href="http://www.twitter.com/sicktimez" target="_blank"><i class="fa fa-twitter"></i></a>
 						<a href="https://www.facebook.com/profile.php?id=614638324" target="_blank"><i class="fa fa-facebook"></i></a>
 						<a href="https://www.instagram.com/sicktimez" target="_blank"><i class="fa fa-instagram"></i></a>
 					</div>
+					<p class="copy">&copy; <?php echo date("Y"); ?> Sick Timez Productions, All Rights Reserved.</p>
 				</div>
 			</div>
 		</footer>
@@ -101,32 +137,26 @@
 					});
 				});
 
-				$('#mnMenuBtn').click(function(evt){
-					evt.preventDefault();
-					toggleMainInnerNav();
+				//Opening the full page nav menu
+				$('#main-hamburger').click(function() {
+					$(this).toggleClass('open');
+					$('#main_nav').toggleClass('open').toggleClass('closed').removeClass('nav-up');
+					$('#main_nav_items a').toggleClass('open').toggleClass('closed');
 				});
 
-				$('#mnCanvasCover').click(function(evt){
-					evt.preventDefault();
-					$('.snInnerMenu').removeClass('sniOpen');
-					toggleMainInnerNav();
-				});
-
-				$('.imLink').click(function(evt){
-					evt.preventDefault();
-					var snID = $(this).attr('data-subnav-id');
-					if(!$('#'+snID).hasClass('sniOpen')) {
-						$('.snInnerMenu').removeClass('sniOpen');
-						$('#'+snID).addClass('sniOpen');
+				//Turn the top bar black on scroll:
+				$(window).scroll(function(){
+					var height = $(window).scrollTop;
+					if(height > 50) {
+						$('#main_nav_bg').css({
+							'background': '#000000',
+						});
 					}
-					$(this).blur();
-					$('#'+snID).focus();
-					$('#'+snID).blur();
-				});
-
-				$('.snBack').click(function(evt){
-					evt.preventDefault();
-					$(this).parents('.snInnerMenu').removeClass('sniOpen');
+					if(height <= 50) {
+						$('#main_nav_bg').css({
+							'background': 'transparent',
+						});
+					}
 				});
 
 

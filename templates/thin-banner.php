@@ -3,7 +3,7 @@
 		if(!isset($banner_image) || $banner_image == '') {
 			$banner_image = 'hero-bg.jpg';
 		}
-	} else $banner_image = 'sicktimez_studio.jpg';
+	} else $banner_image = 'home-bg.jpg';
 ?>
 
 <div style="background-image: url('/images/<?php echo $banner_image; ?>')" class="hero <?php
@@ -18,7 +18,7 @@
 
 	<div class="columns no-marg">
 		<!-- Nav template included: -->
-		<?php include($heroNav); ?>
+		
 
 		<!-- Hero text content starts here: -->
 		<div class="row">

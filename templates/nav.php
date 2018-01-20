@@ -18,7 +18,7 @@
 				<li><a href="/about">About</a></li>
 				<li><a href="/music">Music</a></li>
 				<li><a href="/videos">Videos</a></li>
-				<li><a href="/media">Media</a></li>
+				<li><a href="/limited-edition">Limited Edition</a></li>
 				<li><a href="#contact">Contact</a></li>
 			</ul>
 			<!-- end of dropdown/drilldown -->

@@ -1,65 +1,41 @@
 <?php
+$page_title = 'Seattle';
 
-$page_title = 'Contact';
-$jq_validate = true;
+$img_dir = '/images/';
+$hero_image = 'contact-hero.jpg';
+$hero_text = '';
 
-ob_start();
-/* Custom css or other header links/includes go here. */
-?>
-
-<?php
-$output['head'] = ob_get_contents();
-ob_clean();
 
 ob_start();
-/* Main page content goes here */
 ?>
-
-<?php echo show_message('callout'); ?>
-
-<!-- Background-image and text: -->
-<div class="page-hero" style="background-image:url(/images/quiz-page-hero.jpg)">
-	<div class="columns medium-12 text-center">
-		<div class="center-wrap">
-			<h1 class="text-center"><?php echo $page_title; ?></h1>
-		</div>
-	</div>
-</div> <!-- end of Background-image and text -->
-
-<div class="row tb-pad-60 form-wrap">
-	<div class="columns large-8 small-10 small-centered">
-		<div id="contact">
-			<form action="." method="post" id="contact-tep-form">
-				<input type="hidden" name="action" value="contact-email">
-				<div class="">
-					<label for="name">Your Name*</label>
-					<input type="text" name="name" id="name" required value="" />
-				</div>
-				<div class="">
-					<label for="email">Your Email*</label>
-					<input type="text" name="email" id="email" required value="" />
-				</div>
-				<div class="">
-					<label for="message">Your Message*</label>
-					<textarea name="message" id="message" rows="8" cols="40" required></textarea>
-				</div>
-				<div class="">
-					<p class="text-right req">*Required fields</p>
-				</div>
-				<div class="row tb-pad-30">
-					<div class="columns medium-12 submit-btn">
-						<button type="submit" class="button submit-btn">Submit</button>
+<!-- Black contact form starts here: -->
+<div class="black-bg" id="contact-section">
+	<div class="row">
+		<div class="large-12 columns small-centered">
+			<div class="row">
+				<div class="large-8 columns small-centered">
+					<div id="messageShell" style="display:none;">
+						<h4>Thank You!</h4>
+						<p class="text-center">Your message has been sent.</p>
 					</div>
+
+					<form action="." method="post" id="contactForm" class="text-center" name="contactForm" novalidate="novalidate">
+						<label class="show-for-ie9" for="name">Name</label>
+						<input id="contactName" required type="text" name="name" value="" placeholder="Name" />
+						<label class="show-for-ie9" for="email">Email</label>
+						<input id="contactEmail" type="text" name="email" placeholder="Email" required>
+						<label class="show-for-ie9" for="message">Message</label>
+						<textarea id="contactMessage" type="text" name="message" placeholder="Message" required></textarea>
+						<div class="new-btn">
+							<button type="submit" class="button primary" id="contactBtn" name="contactBtn">Send</button>
+						</div>
+					</form>
 				</div>
-			</form>
-		</div>
-		<div id="contact-success" style="display: none;">
-			<h4 class="text-center">Thank You!</h4>
-			<p class="text-center">Your message has been sent.</p>
+			</div>
 		</div>
 	</div>
 </div>
-
+<!-- end of Black contact form -->
 
 
 
@@ -67,31 +43,83 @@ ob_start();
 $output['content'] = ob_get_contents();
 ob_clean();
 ob_start();
-/* Custom JavaScript goes here. */
 ?>
-<script>
-$('document').ready(function() {
-	$('#contact-tep-form').validate({
-		rules: {
-			email: {
-				email: true
-			}
-		},
-		submitHandler: function(form) {
-			$.ajax({
-				type: "POST",
-				url: "<?php $config->get('url'); ?>ajax",
-				data: $('#contact-tep-form').serialize(),
-				success: function(data){
-					$('#contact').hide();
-					$('#contact-success').show();
+
+	<script src="/plugins/selectric/jquery.selectric.js"></script>
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+
+			// Initialize Select Menu special styles (disable for mobile):
+			// var contactAnimationOne = false;
+      //
+		  // // Scroll magic initialize:
+		  // var controller = new ScrollMagic.Controller();
+      //
+			// // Scene 1:
+		  // var sceneContact = new ScrollMagic.Scene({
+		  //     triggerElement: "#contact-section",
+		  //     duration: 400,
+		  //     offset: 0
+		  //   })
+		  //   .addTo(controller)
+      //
+		  // .on("progress", function(e) {
+		  //   $('#contact-section form').addClass('move');
+		  //   $('#contact-section').addClass('move');
+		  //   //the number from top youve scrolled
+		  //   if (e.progress.toFixed(3) >= 0 && contactAnimationOne == false) {
+		  //     $('#contact-section form').addClass('move');
+			// 		$('#contact-section').addClass('move');
+		  //     contactAnimationOne = true;
+		  //   }
+		  // });
+
+			$('#contactBtn').click(function(e){
+			  e.preventDefault();
+			  $('#contactForm').submit();
+			 });
+
+			 $('#contactForm').submit(function(e) {
+		     e.preventDefault();
+		   }).validate({
+				rules: {
+					email: {
+						required: true,
+						email: true
+					}
 				},
-				dataType: "json"
+				submitHandler: function(form) {
+
+					var formData = $('#contactForm').serialize();
+					formData += '&action=contact-form';
+					$.ajax({
+						 type: 'POST',
+						 url: './ajax.seattle.php',
+						 data: formData,
+						 success: function(data){
+							 if (data.status == 'error') {
+								$('#errorShell').html('Oops! An error occurred while processing your answers.');
+								$('#messageShell h3').hide();
+								$('#messageShell p').html('There was a problem processing your message. Please try again.').css('color', 'red');
+								$('#messageShell').show();
+							} else {
+								//successful
+								$('#contactForm').slideUp(500);
+								$('#messageShell').slideDown(500);
+							}
+						 }
+					 });
+					$('#contactForm').slideUp();
+					$('#messageShell').slideDown();
+				}
 			});
-		}
-	});
-});
+
+
+		}); //end of document.ready
+
 </script>
+
 
 <?php
 $output['footer_js'] = ob_get_contents();

@@ -22,16 +22,7 @@ ob_start();
 <?php include($thinBannerURL); ?>
 
 <!-- Intro section starts here: -->
-<div class="main-content intro tb-pad-120">
-	<div class="row">
-		<div class="columns large-8 text-center small-centered">
-			<h2>Stoke Your Sound</h2>
-			<!-- <hr> -->
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-		</div>
-	</div>
-	<div id="cta-trigger">&nbsp;</div>
-</div>
+
 <!-- end of Intro section -->
 
 

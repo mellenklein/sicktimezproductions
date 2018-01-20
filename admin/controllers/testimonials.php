@@ -1,21 +1,30 @@
 <?php
-$model = new SortModel('testimonials');
-$items = $model->get_items(array('order' => 'sort'));
-$item = array();
-$item_names = array(
-	'singular'=>'Testimonial',
-	'plural'=>'Testimonials'
+$model = new Model('testimonials');
+$args = array(
+	'order'=>'sort'
 );
+$items = $model->get_items($args);
+$item = array();
 $view = 'list';
 
+$name_var = 'Testimonial';
+$plural_var = "Testimonials";
+
 // URL structure: [Base CMS URL]/controller/action/id
-$action = !empty($url_segments[1]) ? $url_segments[1] : '';
+$action = !empty($url_segments[1]) ? $url_segments[1] : 'list';
 $id = !empty($url_segments[2]) && ctype_digit($url_segments[2]) ? $url_segments[2] : 0;
 
 if($id){
 	$model->load($id);
 }
+/* ----------------------------------------------------------------------------
+* ACCESS CONTROL
+* ---------------------------------------------------------------------------*/
 
+
+// let's see if the user has access to use the action they are viewing
+//for convience, we are using the default method.  Internally, this method calls createFirewall
+$action = $user->checkAccess($ctrl, $action, $config->get('admin_url'));
 /* ----------------------------------------------------------------------------
 * ACTION: UPDATE
 * ---------------------------------------------------------------------------*/
@@ -23,28 +32,35 @@ if($action == 'update'){
 
 	$fields = $_POST;
 	$add = 0;
-	
+
+	if(!empty($fields['featured_remove'])){
+		$fields['image'] = '';
+	}
+	unset($fields['featured_remove']);
+	//var_dump($fields);
+
 	if(!empty($model->data['id'])){
 		$result = $model->update($fields);
 	} else {
 		$lastItem = $model->get_items(array('order' => 'sort DESC', 'limit' => 1));
-		
-		$lastSort = $lastItem[0]['sort'];
+
+		$lastSort = (isset($lastItem[0]['sort'])) ? $lastItem[0]['sort'] : 0 ;
 		$fields['sort'] = $lastSort+1;
+
 		$add = 1;
 		$result = $model->insert($fields);
 		if($result !== FALSE){
 			$id = $result;
 		}
 	}
-	
+
 	if($result !== FALSE){
-		set_message('The '.$item_names['singular'].' has been '.($add ? 'added' : 'updated').' successfully.', 'success');
+		set_message('The '.$name_var.' has been '.($add ? 'added' : 'updated').' successfully.', 'success');
 	}
 	else{
-		set_message('There was a problem '.($add ? 'adding' : 'updating').' the '.$item_names['singular'].'.', 'fail');
+		set_message('There was a problem '.($add ? 'adding' : 'updating').' the '.$name_var.'.', 'fail');
 	}
-	
+
 	header('location:'.$module_url.($id ? 'edit/'.$id : ''));
 	exit();
 
@@ -57,28 +73,25 @@ if($action == 'delete'){
 
 	$result = $model->delete();
 	if($result !== FALSE){
-		set_message('The '.$item_names['singular'].' has been deleted successfully.', 'success');
+		set_message('The '.$name_var.' has been deleted successfully.', 'success');
 	}
 	else{
-		set_message('There was a problem deleting the '.$item_names['singular'].'.', 'fail');
+		set_message('There was a problem deleting the '.$name_var.'.', 'fail');
 	}
-	
+
 	header('location:'.$module_url);
 	exit();
 
 }
-
 /* ----------------------------------------------------------------------------
 * ACTION: SORT
 * ---------------------------------------------------------------------------*/
 if($action == 'sort'){
 
-	$ret = $model->sort($_POST['sort']);
-	echo $ret;
+	$model->sort($_POST['sort']);
 	exit();
 
 }
-
 /* ----------------------------------------------------------------------------
 * ACTION: ADD/EDIT
 * ---------------------------------------------------------------------------*/
@@ -87,9 +100,6 @@ if($action == 'add' || $action == 'edit'){
 	$item = $model->data;
 	$view = 'edit';
 	$rte = 1; // Include tinymce
-	$uploader = 1; // Include uploadify
-	$timestamp = time(); // Needed for uploadify
-	$upload_dir = $config->get('admin_upload_img_dir').'testimonials/';
 
 }
 
@@ -102,160 +112,72 @@ ob_start();
 * ---------------------------------------------------------------------------*/
 if($view == 'edit'):
 ?>
-
 <script type="text/javascript">
 $(function() {
-	// Create URL tag
-	$('#name').blur(function(){
-		var name = $(this).val();
-		var company = $('#company').val();
-		var spacer = '';
-		if(name.length > 0 && company.length > 0) {
-			spacer = ' ';
-		}
-		var title = name+spacer+company;
-		if(title != ''){
-			$.post('<?php echo $config->get('admin_url'); ?>ajax', {action:'testimonial_slug',title:title, id:<?php echo $id; ?>}, function(data){
-				if(data != ''){
-					$('#slug').val(data);
-				}
-			});
-		}
-	});
-	$('#company').blur(function(){
-		var name = $('#name').val();
-		var company = $(this).val();
-		var spacer = '';
-		if(name.length > 0 && company.length > 0) {
-			spacer = ' ';
-		}
-		var title = name+spacer+company;
-		if(title != ''){
-			$.post('<?php echo $config->get('admin_url'); ?>ajax', {action:'testimonial_slug',title:title, id:<?php echo $id; ?>}, function(data){
-				if(data != ''){
-					$('#slug').val(data);
-				}
-			});
-		}
-	});
-	$('#slug').blur(function(){
-		var slug = $(this).val();
-		if(slug != ''){
-			$.post('<?php echo $config->get('admin_url'); ?>ajax', {action:'testimonial_slug',slug:slug, id:<?php echo $id; ?>}, function(data){
-				if(data != ''){
-					$('#slug').val(data);
-				}
-			});
-		}
-	});
-	$('#logo_upload').uploadifive({
-		'uploadScript' : '<?php echo $config->get('admin_url'); ?>upload',
-		'onCancel' : function(event,fileObj,data) {
-			$('#logo_filename').val('');
-			$('#logo_view').html('');
-		},
-		'queueSizeLimit' : 1,
-		'buttonText' : 'Upload Image',
-		'height' : 24,
-		'onUploadComplete' : function(file, data) {
-			if(data != '0'){
-				$('#logo_filename').val(data);
-				$('#logo_view').html('<img style="max-width: 100%;" src="<?php echo $config->get('admin_url').$upload_dir; ?>'+data+'" />');
-			}
-			else{
-				alert('The file could not be uploaded. The file must be a valid JPG, GIF, or PNG image.');
-			}
-		},
-		'onError' : function(errorType, file) {
-			alert('The file ' + file.name + ' could not be uploaded: ' + errorType);
-		},
-		'formData' : {
-			'timestamp':'<?php echo $timestamp;?>',
-			'token':'<?php echo md5($config->get('sitename').$timestamp);?>',
-			'type':'testimonial-logo',
-			'sub_dir':'<?php echo $upload_dir ?>'
-		}
-	
-	});
-	$('form').on('click', '#logo_remove', function(evt){
-		evt.preventDefault();
-		removeImage($('#logo_filename'), 'logo', 'testimonials', $('#logo_view'));
-	});
-	function removeImage(file_ele, field, table, element) {
-		var file = file_ele.val();
-		if (window.confirm("Do you really want to delete this image?")) {
-			$.post('<?php echo $config->get('admin_url'); ?>ajax', {action:'delImage',file:file, field:field, table:table, id:<?php echo json_encode($id); ?>}, function(data){
-				if(data > 0){
-					element.html('');
-					file_ele.val('');
-				}
-			});
-		}
-	}
+	// if($(':radio[name="has_btn"]').filter(':checked').val() == 0) {
+	// 	$('.button-container').hide();
+	// }
+	//
+	// $(':radio[name="has_btn"]').change(function() {
+	//   var btn = $(this).filter(':checked').val();
+	// 	if (btn == 1) {
+	// 		$('.button-container').slideDown();
+	// 	} else if(btn == 0) {
+	// 		$('.button-container').slideUp();
+	// 		$('input[name="button_text"]').val('');
+	// 		$('input[name="button_url"]').val('');
+	// 	}
+	// });
+
 });
 </script>
 
-<h1><?php echo ucfirst($action); ?> Content</h1>
+<div class="row bg-img interior">
+	<div class="col-md-12">
+		<h3><?php echo ucfirst($action); ?> <?php echo $name_var; ?> </h3>
+		<div class="clear"><!-- x --></div>
+		<form id="form" action="<?php echo $module_url.'update/'.$id; ?>" method="post" enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-md-9">
 
-<form action="<?php echo $module_url.'update/'.$id; ?>" method="post" enctype="multipart/form-data">
-	
-	<div class="wide_col">
-		
-		
-		
-		<div class="form_field">
-			<label>Speaker Full Name</label>
-			<input class="in_text" type="text" name="name" id="name" value="<?php echo htmlentities($item['name']); ?>" />
-		</div>
-		
-		<div class="form_field">
-			<label>Speaker Company</label>
-			<input class="in_text" type="text" name="company" id="company" value="<?php echo htmlentities($item['company']); ?>" />
-		</div>
-		
-		<div class="form_field">
-			<label>URL Slug</label>
-			<div class="note">Letters, numbers, and dashes only. No spaces. Example: <?php echo $config->get('site_url'); ?><strong>my-url-tag</strong></div>
-			<input class="in_text" type="text" name="slug" id="slug" value="<?php echo $item['slug']; ?>" />
-		</div>
-		
-		<div class="form_field">
-			<label>Speaker's Position at Company</label>
-			<input class="in_text" type="text" name="position" id="position" value="<?php echo htmlentities($item['position']); ?>" />
-		</div>
-		
-		<div class="form_field">
-			<label>Photo/Logo</label>
-			<div id="logo_view">
-				<?php if(is_file((dirname ( __FILE__ ).'/../../assets/images/testimonials/'.$item['logo']))): ?>
-				<img style="max-width: 100%;" src="<?php echo $config->get('admin_url').$upload_dir.$item['logo']; ?>" alt="" />
-				<p><a href="#" id="logo_remove" > Remove this image</a></p>
-				<?php endif; ?>
+					<div class="form_field">
+						<label>Quotation</label>
+						<textarea class="mce" name="quote"><?php echo $item['quote']; ?></textarea>
+					</div>
+
+					<div class="form_field">
+						<label>Person</label>
+						<input class="in_text" type="text" name="person" id="person" value="<?php echo $item['person']; ?>">
+					</div>
+
+					<div class="form_field">
+						<label>Title</label>
+						<input class="in_text" type="text" name="title" value="<?php echo $item['title']; ?>" />
+					</div>
+
+				</div>
+				<div class="col-md-3">
+					<div class="form_field">
+						<label>Active</label>
+						<label style="display: inline-block; margin-right: 14px;"><input class="" type="radio" name="active" id="active" value="1" <?php echo ((!isset($id) || empty($id)) || $item['active'] == 1) ? 'checked="checked"' : '' ; ?> /> Yes</label>
+						<label style="display: inline-block;"><input class="" type="radio" name="active" id="active" value="0" <?php echo (isset($item['active']) && $item['active'] == 0) ? 'checked="checked"' : '' ; ?> /> No</label>
+					</div>
+				</div>
 			</div>
-			<input type="file" name="logo" id="logo_upload" />
-			<input type="hidden" name="logo" id="logo_filename" value="<?php echo $item['logo']; ?>" />
-		</div>
-		
-		<div class="form_field">
-			<label>Testimonial Quote</label>
-			<p class="note">Do not include quotation marks. They will be added later.</p>
-			<textarea class="in_text" name="quote" rows="10"><?php echo $item['quote']; ?></textarea>
-		</div>
-		
-		<div class="form_field">
-			<label>Page Content</label>
-			<textarea class="mce" name="content"><?php echo $item['content']; ?></textarea>
-		</div>
-	
+			<div class="clear"><!-- x --></div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="action_buttons">
+						<input class="btn primary-btn yes" type="submit" value="<?php echo($id ? 'Update' : 'Create'); ?>" /> &nbsp;&nbsp;&nbsp;
+						<input class="btn no btn-warning" type="button" value="Cancel" onclick="window.location='<?php echo $module_url; ?>';" />
+					</div>
+				</div>
+			</div>
+		</form>
+
 	</div>
-	
-	<div class="clear"><!-- x --></div>
-  
-  <div class="action_buttons">
-		<input class="btn yes" type="submit" onClick="checkTextData();" value="<?php echo($id ? 'Update' : 'Create'); ?>" /> &nbsp;&nbsp;&nbsp;
-  	<input class="btn no" type="button" value="Cancel" onclick="window.location='<?php echo $module_url; ?>';" />
-	</div>
-</form>
+</div>
 
 <?php
 /* ----------------------------------------------------------------------------
@@ -264,36 +186,51 @@ $(function() {
 else:
 ?>
 
-<h1><?php echo $item_names['plural']; ?></h1>
+<div class="row bg-img interior">
+	<div class="col-md-12">
+		<h3><?php echo $plural_var; ?></h3>
 
-<p><strong><a href="<?php echo $module_url; ?>add">+ Add New <?php echo $item_names['singular']; ?></a></strong></p>
+		<a href="<?php echo $module_url; ?>add" class="icon-action">
+			<div class="icon"><i class="fa fa-plus"></i></div>
+			<p>Add New <?php echo $item_names['singular']; ?></p>
+		</a>
 
-<?php if(!empty($items)): ?>
+		<div class="clear"><!-- x --></div>
 
-<table class="cms_table">
-  <tr>
-  	<th>Sort</th>
-	<th>Speaker</th>
-  	<th>Company</th>
-   <th>Actions</th>
-  </tr>
-  <tbody class="sortable" rel="testimonials">
-	<?php foreach($items as $i): ?>
-	
-	<tr id="sort_<?php echo $i['id']; ?>">
-		<td class="sorter"><img src="<?php echo $config->get('admin_url'); ?>images/sort.png" alt="sort" /></td>
-		<td><?php echo $i['name']; ?></td>
-		<td><?php echo $i['company']; ?></td>
-		<td align="center">
-			<a href="<?php echo $module_url.'edit/'.$i['id']; ?>">Edit</a> | <a href="<?php echo $module_url.'delete/'.$i['id']; ?>" onclick="return confirm('Are you sure you want to delete this <?php echo $item_names['singular']; ?>?');">Delete</a>
-		</td>
-	</tr>
-	
-	<?php endforeach; ?>
-	</tbody>
-</table>
+		<?php if(!empty($items)): ?>
 
-<?php endif; ?>
+		<table class="cms_table table table-striped responsive">
+			<thead>
+				<tr>
+			  	<th class="hide-for-mobile">Sort</th>
+					<th>Person</th>
+			    <th>Quotation</th>
+			    <th>Actions</th>
+			  </tr>
+			</thead>
+
+		  <tbody class="sortable" rel="testimonials">
+				<?php foreach($items as $i): ?>
+					<tr id="sort_<?php echo $i['id']; ?>">
+						<td class="sorter hide-for-mobile"><img src="<?php echo $config->get('admin_url'); ?>images/sort.png" alt="sort" /></td>
+						<td><?php echo $i['person']; ?></td>
+						<td><?php echo strip_tags($i['quote']); ?></td>
+
+						<td align="center">
+							<a href="<?php echo $module_url.'edit/'.$i['id']; ?>">Edit</a>
+							<?php if($i['lock_slug'] != 1): ?>
+							| <a href="<?php echo $module_url.'delete/'.$i['id']; ?>" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+
+		</table>
+
+		<?php endif; ?>
+	</div>
+</div>
 
 <?php
 /* ----------------------------------------------------------------------------

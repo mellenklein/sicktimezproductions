@@ -1,6 +1,6 @@
 <?php
 $page_title = 'Videos';
-$banner_image = 'page-hero02.jpg';
+$banner_image = 'header-video.jpg';
 
 $videos_db = new Model('videos');
 $videos = $videos_db->get_items(array('order' => 'sort', 'where' => 'active = 1'));

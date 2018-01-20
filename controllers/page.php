@@ -80,7 +80,7 @@ $(document).ready(function() {
 				coloredLine.css('marginTop', '-'+ ((imageHeight/2) + 90) + 'px');
 				coloredLine.addClass('show-for-medium');
 			} else {
-				
+
 			}
 		};
 		calculateLinePosition(purpImgHeight, purpLine);

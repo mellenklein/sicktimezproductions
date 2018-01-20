@@ -1,6 +1,6 @@
 <?php
 $page_title = 'Current songs';
-$banner_image = 'page-hero02.jpg';
+$banner_image = 'header-mic.jpg';
 
 $songs_db = new Model('songs');
 $songs = $songs_db->get_items(array('order' => 'sort', 'where' => 'active = 1'));
@@ -21,18 +21,7 @@ ob_start();
 			</div>
 		</div>
 		<?php foreach($songs AS $li): ?>
-		<div class="no-marg row tb-pad-60 song<?php
-			if($li['status'] == "For Sale") {
-				echo ' sale';
-			} else if($li['status'] == "For Lease") {
-				echo ' lease';
-			}
-			if($li['city'] == "Nashville, TN") {
-				echo ' nashville';
-			} else if($li['city'] == "Austin, TX") {
-				echo ' austin';
-			}
-		?>">
+		<div class="no-marg row tb-pad-60 song">
 			<div class="columns large-6 no-pad">
 				<div class="bg-img" style="background-image: url(<?php echo $config->get('url').'/assets/images/songs/'.$li['featured_image']; ?>);"></div>
 			</div>
