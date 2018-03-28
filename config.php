@@ -26,7 +26,7 @@ $config->set('admin_upload_img_dir', './../assets/images/');
 $output = array('head'=>'', 'content'=>'', 'footer_js'=>'');
 
 //client logo - used in admin template.php
-$config->set('client_logo', '/admin/images/op-logo-color.png');
+$config->set('client_logo', '/admin/images/sicktimez-logo-dark.jpg');
 
 // Get items from site info table
 $info_model = new Model('site_info');

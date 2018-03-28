@@ -12,7 +12,7 @@ $action = isset($_POST['action']) ? $_POST['action'] : '';
 
 		$form_data = $_POST;
 
-		$admin_to = 'maryellen@foxfuelcreative.com';
+		$admin_to = 'maryellenklein@gmail.com';
 
 		// Store in database
 		// $model = new Model('contacts');
@@ -25,31 +25,20 @@ $action = isset($_POST['action']) ? $_POST['action'] : '';
 		// );
 		// $model->insert($post);
 
-		if($form_data['date'] == 'day1') {
-			$meeting_date = 'Friday, Feb. 9th:';
-		} else if($form_data['date'] == 'day2') {
-			$meeting_date = 'Monday, Feb. 12th';
-		} else if($form_data['date'] == 'day3') {
-			$meeting_date = 'Tuesday, Feb. 13th';
-		} else {
-			$meeting_date = 'unspecified';
-		}
-
-
 		// Send email
-		$admin_subject = 'Seattle Meeting Request';
+		$admin_subject = 'New Message For Sick Timez Productions';
 
-		$headers = "From: FoxFuel Creative <info@foxfuelcreative.com>\r\n";
+		$headers = "From: Sick Timez Productions <info@sicktimez.productions>\r\n";
 		$headers .= "MIME-Version: 1.0\r\n";
 		$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-		$headers .= "Bcc: maryellen@foxfuelcreative.com\r\n";
+		$headers .= "Bcc: maryellenklein@gmail.com\r\n";
 
-		$admin_message = '<h4 style="font-size:18px;">There\'s a new meeting request from the form on http://www.foxfuelcreative.com/seattle:</h4>
+		$admin_message = '<h4 style="font-size:18px;">There\'s a new message from the form on the Sick Timez website:</h4>
 		<h3>Message Details:</h3>';
 
-		$admin_message .= '<p><strong>Contact Info: </strong>'.$form_data['contact_info'].'</p>
-		<p><strong>Is interested in meeting for: </strong>'.$form_data['activity'].'</p>
-		<p><strong>On </strong>'.$meeting_date.' at '.$form_data['time'].'.</p>
+		$admin_message .= '<p><strong>Name: </strong>'.$form_data['name'].'</p>
+		<p><strong>Email: </strong>'.$form_data['email'].'</p>
+		<p><strong>Message: </strong>'.$form_data['message'].'.</p>
 		<p><strong>Date Submitted: </strong>'.date('m/d/Y H:iA').'</p><br>';
 
 

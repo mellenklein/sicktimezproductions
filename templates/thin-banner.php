@@ -18,7 +18,7 @@
 
 	<div class="columns no-marg">
 		<!-- Nav template included: -->
-		
+
 
 		<!-- Hero text content starts here: -->
 		<div class="row">
@@ -27,10 +27,16 @@
 				<?php if(!empty($home_hero_content)): ?>
 					<div class="row">
 						<div class="large-12 columns text-center hero-content">
-							<?php echo $home_hero_content ?>
-							<div class="text-center tb-pad-30 rel">
+							<!-- <?php echo $home_hero_content ?> -->
+							<div class="large-12 columns tb-pad-30" style="z-index:1; position:relative;">
+								<h4>Hey There.</h4>
+    						<p>You found the new version of the website, <br class="show-for-medium">scheduled to launch March 2018.<br>Until then,</p>
+								<div class="tb-pad-15">
+									<a href="http://www.sicktimez.com" class="button hollow large">Check Out The Current Site</a>
+								</div>
+							</div>
+							<div class="text-center tb-pad-30 rel" style="display:none;">
 								<button id="showPlayer" class="button hollow large" style="width:400px;">Listen</button>
-								<!-- <a class="button hollow large" style="width:200px;" href="/music">Listen</a> -->
 								<div id="playerGoesHere">
 									<?php include($audioPlayer); ?>
 								</div>

@@ -34,6 +34,7 @@ $ctrl = 'home';
 
 if (!empty($url_segments[0])) {
   $filepath = 'controllers/'.$url_segments[0].'.php';
+	$page->load($url_segments[0], 'slug');
   if (is_file($filepath)) {
     $ctrl = $url_segments[0];
   }
@@ -41,6 +42,8 @@ if (!empty($url_segments[0])) {
 		$page->load($url_segments[0], 'slug');
 		if ($page->id) {
 			$ctrl = 'page';
+		} else {
+			$ctrl = '404';
 		}
 	}
 }

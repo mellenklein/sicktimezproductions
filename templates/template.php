@@ -33,7 +33,7 @@
 	    </style>
 		<![endif]-->
 		<link rel="icon" href="/favicon.png">
-		<meta property="og:site_name" content="OakPoint Real Estate">
+		<meta property="og:site_name" content="Sick Timez Productions">
 		<meta property="og:title" content="<?php echo $html_title; ?>">
 		<meta property="og:description" content="<?php echo $meta_desc; ?>">
 		<meta property="og:type" content="website">
@@ -65,8 +65,8 @@
 					<div id="global-nav-items" class="show-for-medium">
 						<ul>
 							<li><a href="/about">About</a></li>
-							<li><a href="/work">Music</a></li>
-							<li><a href="/video">Video</a></li>
+							<li><a href="/music">Music</a></li>
+							<li><a href="/videos">Video</a></li>
 							<li><a href="/limited-edition">Limited Edition</a></li>
 							<li><a href="/contact">Contact</a></li>
 						</ul>
@@ -80,8 +80,8 @@
 				<div id="main_nav_items">
 					<ul class="menu vertical text-center">
 						<li><a href="/about">About</a></li>
-						<li><a href="/work">Music</a></li>
-						<li><a href="/video">Video</a></li>
+						<li><a href="/music">Music</a></li>
+						<li><a href="/videos">Video</a></li>
 						<li><a href="/limited-edition">Limited Edition</a></li>
 						<li><a href="/contact">Contact</a></li>
 					</ul>
@@ -100,7 +100,7 @@
 		<footer class="tb-pad-60" style="background: #475362;">
 			<div class="row">
 				<div class="columns large-12 text-center">
-					<h4><a target="_blank" href="/contact">Contact</a></h4>
+					<h4><a  href="/contact">Contact</a></h4>
 					<div class="social">
 						<a href="http://www.twitter.com/sicktimez" target="_blank"><i class="fa fa-twitter"></i></a>
 						<a href="https://www.facebook.com/profile.php?id=614638324" target="_blank"><i class="fa fa-facebook"></i></a>

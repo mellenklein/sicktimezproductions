@@ -1,6 +1,6 @@
 <?php
-$page_title = $page->data['title'];
-$banner_image = 'home-test02.jpg';
+$page_title = 'Contact';
+$banner_image = 'header-mic.jpg';
 
 $songs_db = new Model('songs');
 $songs = $songs_db->get_items(array('order' => 'sort', 'where' => 'active = 1'));
@@ -20,10 +20,10 @@ ob_start();
 				<div class="row">
 					<div class="large-8 columns small-centered">
 						<div id="messageShell" style="display:none;">
-							<h3 class="text-center">Thank You.</h3>
-							<p class="text-center">DJ will be in touch with you shortly.</p>
+							<h4>Thank You!</h4>
+							<p class="text-center">Your message has been sent.</p>
 						</div>
-						<?php echo $page->data['content']; ?>
+						<h2 class="tb-pad-60 text-center">Hit Me Up</h2>
 						<form action="." method="post" id="contactForm" class="text-center" name="contactForm" novalidate="novalidate">
 							<div class="tb-pad-15">
 								<label class="show-for-ie9" for="name">Name</label>
@@ -78,7 +78,7 @@ $(document).ready(function(){
 			formData += '&action=contact-form';
 			$.ajax({
 				 type: 'POST',
-				 url: '/ajax.contact',
+				 url: './ajax.contact.php',
 				 data: formData,
 				 success: function(data){
 					 if (data.status == 'error') {
@@ -89,7 +89,6 @@ $(document).ready(function(){
 					} else {
 						//successful
 						$('#contactForm').slideUp(500);
-						$('.title-text').hide();
 						$('#messageShell').slideDown(500);
 					}
 				 }

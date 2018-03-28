@@ -5,10 +5,11 @@ $args = array(
 );
 $items = $model->get_items($args);
 $item = array();
+$item_names = array(
+	'singular'=>'Testimonial',
+	'plural'=>'Testimonials'
+);
 $view = 'list';
-
-$name_var = 'Testimonial';
-$plural_var = "Testimonials";
 
 // URL structure: [Base CMS URL]/controller/action/id
 $action = !empty($url_segments[1]) ? $url_segments[1] : 'list';
@@ -188,7 +189,7 @@ else:
 
 <div class="row bg-img interior">
 	<div class="col-md-12">
-		<h3><?php echo $plural_var; ?></h3>
+		<h3><?php echo $item_names['plural']; ?></h3>
 
 		<a href="<?php echo $module_url; ?>add" class="icon-action">
 			<div class="icon"><i class="fa fa-plus"></i></div>
