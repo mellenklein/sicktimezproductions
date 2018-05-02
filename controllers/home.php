@@ -1,7 +1,7 @@
 <?php
 $page_title = '';
 $banner_image = '';
-$banner_image = 'sicktimez_studio.jpg';
+$banner_image = 'hero-home-bw.jpg';
 $home_hero_content = '<h2>Stoke</h2><h3>Your</h3><h2>Sound</h2>';
 
 $song_db = new Model('songs');

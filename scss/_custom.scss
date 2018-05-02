@@ -113,7 +113,7 @@ html { box-sizing: border-box; }
 	margin: 0 auto;
 	// margin: -18vh auto 0;
 	min-height: 27em;
-  overflow: hidden;
+  // overflow: hidden;
   background-color: #111;
   border-radius: 0.25em;
   box-shadow:
@@ -264,7 +264,7 @@ html { box-sizing: border-box; }
 
 .cover::before,
 .cover::after {
-  content: '';
+  // content: '';
   position: absolute;
   z-index: 10;
   top: 50%;
@@ -1313,7 +1313,6 @@ h2.sub-menu {
   margin-bottom: 30px;
 }
 #banner {
-	position: fixed;
 	top: 0px;
 	left: 0px;
 	width: 100%;
@@ -1321,19 +1320,22 @@ h2.sub-menu {
 	z-index: -1;
 	overflow: hidden;
 	background-color: $blue;
+	video {
+		min-width: 100%;
+		opacity: 0.8;
+		filter: none;
+		-ms-transform: none;
+		transform: none;
+		max-width: 100%;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		max-height: none;
+		margin: 0 auto;
+	}
 }
-.hero video {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	-moz-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	-webkit-transform: translate(-50%, -50%);
-	min-height: 100%;
-	min-width: 100%;
-	opacity: 0.3;
-}
+
 // Interior hero:
 .hero.interior {
 	height: 400px;

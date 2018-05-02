@@ -22,7 +22,6 @@ $(document).ready(function() {
 	function changeNav() {
 		var scrolled = $(window).scrollTop();
 		if (scrolled > 50) {
-			console.log('time to turn pink');
 			$('#main_nav_bg').addClass('scrolled');
 		} else {
 			$('#main_nav_bg').removeClass('scrolled');
