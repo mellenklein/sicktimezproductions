@@ -1,6 +1,7 @@
 <?php
 $page_title = 'Limited Edition';
-$banner_image = 'header-guitar.jpg';
+// $banner_image = 'header-guitar.jpg';
+$banner_image = 'header-mic.jpg';
 
 
 ob_start();

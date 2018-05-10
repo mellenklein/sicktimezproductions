@@ -60,6 +60,7 @@ h5 {
 	font-size:18px;
 	font-weight: 900;
 	min-width: 150px;
+	max-width: 100%;
 }
 .button.hollow {
 	color: $white;
@@ -619,7 +620,7 @@ html { box-sizing: border-box; }
 
 // Hero styles:
 .hero {
-	background-image: url('../images/sicktimez_studio.jpg');
+	background-image: url('../images/home-hero-mic.jpg');
 	background-color: $blue;
 	background-position: top center;
 	background-repeat: no-repeat;
@@ -661,6 +662,9 @@ html { box-sizing: border-box; }
 }
 .hero-content {
 	padding: 130px 0 30px;
+	margin: 0 auto;
+	display: block;
+	text-align: center;
 }
 .rel {
 	position: relative;
@@ -756,7 +760,6 @@ html { box-sizing: border-box; }
   float: right;
   transition: 0.3s top ease-in-out;
 	ul {
-		display: none;
     margin: 0px;
 	}
 	li {
@@ -1335,7 +1338,33 @@ h2.sub-menu {
 		margin: 0 auto;
 	}
 }
-
+.shade-box {
+  // background-color: rgba(26, 41, 60, 0.8);
+  display: inline-block;
+  padding: 30px 30px 0;
+  position: relative;
+	max-width: 100%;
+}
+// .triangle {
+// 	width: 0;
+//   height: 0;
+// 	display: inline-block;
+// 	position: absolute;
+// }
+// .tri-right {
+//   border-top: 0px solid transparent;
+//   border-bottom: 315px solid transparent;
+//   border-left: 80px solid rgba(26, 41, 60, 0.8);
+//   top: 0;
+//   right: -80px;
+// }
+// .tri-left {
+//   border-bottom: 0px solid transparent;
+//   border-top: 315px solid transparent;
+//   border-right: 80px solid rgba(26, 41, 60, 0.8);
+//   top: 0;
+//   left: -80px;
+// }
 // Interior hero:
 .hero.interior {
 	height: 400px;
@@ -1561,7 +1590,12 @@ h2.sub-menu {
 .gif-container {
 	background-color: $black;
 }
-
+.bio-img {
+	background-image: url('../images/dj-bio-pic-long.jpg');
+	min-height: 300px;
+	background-size: cover;
+  background-position: center;
+}
 
 @media (max-width: 1300px) {
 	.menu>li>a {
@@ -1712,6 +1746,18 @@ h2.sub-menu {
 
 
 @media (max-width: 639px) {
+	.hero.interior h1 {
+		margin-top: 44%;
+	}
+	.slick-arrow {
+		background: none;
+	}
+	.slick-next {
+		text-align: right;
+	}
+	.slick-prev {
+		text-align: left;
+	}
 	#main-hamburger {
 		margin: 15px 15px 0px 0px;
 	}
@@ -1753,6 +1799,12 @@ h2.sub-menu {
 	.hero-content {
     padding: 100px 0;
 	}
+	.player {
+		width: auto;
+		h1 {
+			font-size: 30px;
+		}
+	}
 	.team-home .grid-item {
 	  width: 100%;
 		background-position: top center;
@@ -1770,6 +1822,7 @@ h2.sub-menu {
 			width: 100%;
 		}
 	}
+
 	.services-page .lg-num {
 		display: none;
 	}

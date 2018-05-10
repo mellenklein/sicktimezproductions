@@ -14,42 +14,44 @@ ob_clean();
 ob_start();
 /* Main page content goes here */
 ?>
-<?php include($thinBannerURL); ?>
+	<?php include($thinBannerURL); ?>
 	<!-- About page Content -->
 	<div class="about-page">
+
 		<div class="row tb-pad-60">
 			<div class="large-10 large-centered columns">
 				<?php echo $page->data['content']; ?>
 			</div>
 		</div>
-	<?php if(!isset($testimonials_db->data) || empty($testimonials_db->data)): ?>
-		<div class="blue-bg">
-			<div class="row tb-pad-60 testimonials">
-				<div class="columns large-10 small-centered">
-					<div class="testimonials slick tb-pad-60">
-						<?php foreach($testimonials AS $t): ?>
-							<div class="slide">
-								<div class="row" data-equalizer>
-									<div class="medium-8 small-centered columns" data-equalizer-watch>
-										<div class="caption">
-											<div class="caption-centered">
-												<div class="quote">
-													<div class="mark text-center">&ldquo;</div>
-													<?php echo $t['quote']; ?>
-													<p class="person"><em><?php echo $t['person'].' &ndash; '.$t['title']; ?></em></p>
+
+		<?php if(!isset($testimonials_db->data) || empty($testimonials_db->data)): ?>
+			<div class="blue-bg">
+				<div class="row tb-pad-60 testimonials">
+					<div class="columns large-10 small-centered">
+						<div class="testimonials slick tb-pad-60">
+							<?php foreach($testimonials AS $t): ?>
+								<div class="slide">
+									<div class="row" data-equalizer>
+										<div class="large-8 small-9 small-centered columns" data-equalizer-watch>
+											<div class="caption">
+												<div class="caption-centered">
+													<div class="quote">
+														<div class="mark text-center">&ldquo;</div>
+														<?php echo $t['quote']; ?>
+														<p class="person"><em><?php echo $t['person'].' &ndash; '.$t['title']; ?></em></p>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						<?php endforeach; ?>
+							<?php endforeach; ?>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	<?php endif; ?>
-
+		<?php endif; ?>
+	</div>
 
 
 <?php

@@ -50,7 +50,10 @@ ob_start();
     rewind, showCurrentTime;
 		var totalTracks = audio.length;
 		console.log('totalTracks: ' +totalTracks);
+		console.log(art[0].currentSrc);
 		console.log(duration);
+		var currArt = art[i].currentSrc;
+		$('#currArt').html('<img src="'+currArt+'" alt="Tempest Way">');
 
 		function secsToMins(time) {
 		  var int = Math.floor(time),
@@ -62,6 +65,7 @@ ob_start();
 		}
 
 		function getCurrentTime() {
+			console.log('getCurrentTime funciton is running now');
 		  var currentTimeFormatted = secsToMins(audio[i].currentTime),
 		      currentTimePercentage = audio[i].currentTime / audio[i].duration * 100;
 					var currArt = art[i].currentSrc;
@@ -119,6 +123,10 @@ ob_start();
 		  if (self.hasClass('shuffle') || self.hasClass('repeat')) {
 		    self.toggleClass('active');
 		  }
+			if (self.hasClass('rw')) {
+				playPrevTrack();
+			}
+			console.log('playing prev track');
 		}).on('mousedown', function() {
 		  var self = $(this);
 
@@ -178,16 +186,42 @@ ob_start();
 			console.log('track number = '+ i);
 		}
 
+		var playPrevTrack = function(){
+			audio[i].pause();
+			$('.song').fadeOut();
+			//reset first track, change track, then play next track from start:
+			audio[i].currentTime = 0;
+			console.log('currentTime: '+ audio[i].currentTime);
+
+			if (i > 0) {
+				i -= 1;
+			} else {
+				i = totalTracks-1;
+			}
+			 getCurrentTime();
+			 if(player.hasClass('playing')) {
+				 audio[i].play();
+			 }
+			console.log('track number = '+ i);
+		}
+
 		$('#showPlayer').click(function(){
 			$(this).fadeOut(100, function(){
-				$('#playerGoesHere #audio-player').slideDown(1000);
+				$('#playerGoesHere #audio-player').slideDown();
 				$('.hero').addClass('overlay');
 			});
+			$('.shade-box').css({
+				'display':'block',
+			});
+
 		});
 
 		$('#closeBtn').click(function(){
 			$('#showPlayer').show();
-			$('#playerGoesHere #audio-player').slideUp(1000, function(){
+			$('.shade-box').css({
+				'display':'inline-block',
+			});
+			$('#playerGoesHere #audio-player').slideUp(function(){
 				$('.hero').removeClass('overlay');
 			});
 		});

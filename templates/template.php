@@ -19,7 +19,7 @@
 		<meta name="description" content="<?php echo $meta_desc; ?>" />
 		<meta name="author" content="<?php echo $meta_author; ?>">
 		<link href="https://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet">
-		<link rel="stylesheet" href="/css/app.css">
+		<link rel="stylesheet" href="/css/app.css?v=1.1">
 		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
@@ -67,7 +67,7 @@
 							<li><a href="/about">About</a></li>
 							<li><a href="/music">Music</a></li>
 							<li><a href="/videos">Video</a></li>
-							<li><a href="/limited-edition">Limited Edition</a></li>
+							<!-- <li><a href="/limited-edition">Limited Edition</a></li> -->
 							<li><a href="/contact">Contact</a></li>
 						</ul>
 					</div>
@@ -82,7 +82,7 @@
 						<li><a href="/about">About</a></li>
 						<li><a href="/music">Music</a></li>
 						<li><a href="/videos">Video</a></li>
-						<li><a href="/limited-edition">Limited Edition</a></li>
+						<!-- <li><a href="/limited-edition">Limited Edition</a></li> -->
 						<li><a href="/contact">Contact</a></li>
 					</ul>
 				</div>
